@@ -3,7 +3,10 @@ from math import exp, log
 
 class Agendador(object):
 
-    def __init__(self, taxa=0.8):
+    def __init__(self):
+        self.taxa = 0.0
+
+    def setTaxa(self, taxa):
         self.taxa = taxa
 
     def getSemente(self):
@@ -27,10 +30,10 @@ class Agendador(object):
             return x0
 
 # Testando classe
-s = Agendador()
+""" s = Agendador()
 tempo_simulacao = s.proximoEvento()
 print("Proxima chegada em %f unidades de tempo, tempo de simulacao em: %f" % (tempo_simulacao, tempo_simulacao))
 for i in range(100):
     proxima_chegada = s.proximoEvento()
     tempo_simulacao = tempo_simulacao + proxima_chegada
-    print("Proxima chegada em %f unidades de tempo, tempo de simulacao em: %f" % (proxima_chegada, tempo_simulacao))
+    print("Proxima chegada em %f unidades de tempo, tempo de simulacao em: %f" % (proxima_chegada, tempo_simulacao)) """
