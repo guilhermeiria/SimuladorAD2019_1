@@ -444,15 +444,6 @@ class Servidor(object):
         else:
             return 0.0
 
-class Evento(object):
-    """        """
-    def __init__(self, tempo, refCliente, tipo ):
-        self.tempo = tempo
-        self.refCliente = refCliente
-        # tipo de evento {0 = Chegada; 1 = termino servico}
-        self.tipo = tipo
-
-
 class Agendador(object):
     def __init__(self, modo, txChegada, txServico):
         self.testeCorretude = modo
