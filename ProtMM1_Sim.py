@@ -15,7 +15,7 @@ class Simulacao(object):
 
         # Deve-se selecionar um dos valores disponiveis na lista para o rho.
         # Valor Padrao e 0.2
-        self.rho = self.rhoValores[4]
+        self.rho = self.rhoValores[1]
 
         # Por padrao a disciplina de atendimento é a FCFS, caso queira-se a LCFS, mudar para False
         self.disciplinaAtendimentoFCFS = True
@@ -30,8 +30,6 @@ class Simulacao(object):
         self.listaDeEventos = []
         self.qntDeRodadas = 100
         self.rodadaAtual = 0
-        # quantidade de coletas por rodada
-        self.k = 100
 
         # Alfa utilizado para o intervalo de confianca
         alpha = 0.95
@@ -102,16 +100,16 @@ class Simulacao(object):
             #print "LCFS"
             if self.servidor.ocupado:
                 # Se o servidor estiver ocupado, o ultimo elemento deve ser o cliente em atendimento
-                    # CHECK
-                    #print "Cliente em atendimento igual a ultimo cliente da fila: "
-                    #print self.servidor.clienteEmAtendimento.id == self.fila[-1].id
-                    # Se confirmado, adicionar na penultima posicao
-                    # OTIMIZACAO Avaliar custo para adicionar na penultima posicao 
+                # CHECK
+                #print "Cliente em atendimento igual a ultimo cliente da fila: "
+                #print self.servidor.clienteEmAtendimento.id == self.fila[-1].id
+                # Se confirmado, adicionar na penultima posicao
+                # OTIMIZACAO Avaliar custo para adicionar na penultima posicao 
                 self.fila.insert(-1,cliente)
-                    #OTIMIZACAO: Inserir return aqui ? Se servidor ocupado,
-                    # basta adicionar cliente e sair
-                    # No caso de não haver cliente em atendimento, fila deve ser vazia por se tratar de
-                    # um sistema conservativo
+                #OTIMIZACAO: Inserir return aqui ? Se servidor ocupado,
+                # basta adicionar cliente e sair
+                # No caso de não haver cliente em atendimento, fila deve ser vazia por se tratar de
+                # um sistema conservativo
             else:
                 # CHECK
                 #print "Sistema Conservativo :"
@@ -120,11 +118,11 @@ class Simulacao(object):
         # Verifica se o servidor esta ocioso para iniciar servico prontamente.
         if not self.servidor.ocupado:
             #print '\t'," -- Servidor nao ocupado. Cliente entra em servico"
-                # A funcao abaixo inicializa o servico do cliente e retorna o tempo de servico gerado 
-                ## para o cliente. A variavel sera utilizada para o agendamento do evento de Fim de servico
-                #cliente.tempoServico = self.servidor.servidorIniciaServico(self.tempoAtual, cliente)
-                # UPDATE: Agora a funcao e chamada somente para inicializar o servico do cliente no servidor.
-                # O agendamento eh feito na funcao de gerar eventos.
+            # A funcao abaixo inicializa o servico do cliente e retorna o tempo de servico gerado 
+            ## para o cliente. A variavel sera utilizada para o agendamento do evento de Fim de servico
+            #cliente.tempoServico = self.servidor.servidorIniciaServico(self.tempoAtual, cliente)
+            # UPDATE: Agora a funcao e chamada somente para inicializar o servico do cliente no servidor.
+            # O agendamento eh feito na funcao de gerar eventos.
             self.servidor.servidorIniciaServico(self.tempoAtual, cliente)
             self.qntClientesFilaDeEspera -= 1
 
@@ -155,37 +153,37 @@ class Simulacao(object):
 
             #print '\t'," -- Tam lista eventos", len(self.listaDeEventos)
         # Nao ha nada a mais para ser feito no caso do servidor ocupado. 
-            '''
-            else:
-                #print '\t'," -- Servidor Ocupado"
-                #print '\t'," -- Mostrar Fila : "
-                for i in self.fila:
-                    print i.id, i.chegada, i.tempoServico
-            print '\t'," - agendando prox chegada"
-            '''
-            
-            # agendar proximo evento de chegada
-            ## MODIFICADO: tarefa de agendar nova chegada fica para o loop principal
-            #self.clienteID += 1
-            
-            #proxChegadaEvento = Evento(self.tempoAtual + self.agendador.agendarChegada(), self.clienteID, 0)
-            #self.listaDeEventos.append(proxChegadaEvento)
-            #print '\t'," - Prox chegada em: ", proxChegadaEvento.tempo, " Cliente : ",proxChegadaEvento.refCliente
-            
-            #print '\t'," - antes de ordenar. Tam = ", len(self.listaDeEventos)
-            #for x in self.listaDeEventos :
-            #    print x.tempo, x.refCliente, x.tipo, "\n"
-            # O tempo de servico gerado sera comparado com todos os eventos que forem agendado ate ele ser 
-            ## executado. Portanto toda a lista de eventos deve ser ordenada
-            
-            # a lista de eventos eh de fato ordenada aqui
-            #self.listaDeEventos = sorted(self.listaDeEventos, key=lambda evento: evento.tempo)
-            
-            #print "ordenar lista eventos por tempo"
+        '''
+        else:
+            #print '\t'," -- Servidor Ocupado"
+            #print '\t'," -- Mostrar Fila : "
+            for i in self.fila:
+                print i.id, i.chegada, i.tempoServico
+        print '\t'," - agendando prox chegada"
+        '''
+        
+        # agendar proximo evento de chegada
+        ## MODIFICADO: tarefa de agendar nova chegada fica para o loop principal
+        #self.clienteID += 1
+        
+        #proxChegadaEvento = Evento(self.tempoAtual + self.agendador.agendarChegada(), self.clienteID, 0)
+        #self.listaDeEventos.append(proxChegadaEvento)
+        #print '\t'," - Prox chegada em: ", proxChegadaEvento.tempo, " Cliente : ",proxChegadaEvento.refCliente
+        
+        #print '\t'," - antes de ordenar. Tam = ", len(self.listaDeEventos)
+        #for x in self.listaDeEventos :
+        #    print x.tempo, x.refCliente, x.tipo, "\n"
+        # O tempo de servico gerado sera comparado com todos os eventos que forem agendado ate ele ser 
+        ## executado. Portanto toda a lista de eventos deve ser ordenada
+        
+        # a lista de eventos eh de fato ordenada aqui
+        #self.listaDeEventos = sorted(self.listaDeEventos, key=lambda evento: evento.tempo)
+        
+        #print "ordenar lista eventos por tempo"
 
-            #print "depois"
-            #for x in self.listaDeEventos :
-            #    print x.tempo, x.refCliente, x.tipo, "\n"
+        #print "depois"
+        #for x in self.listaDeEventos :
+        #    print x.tempo, x.refCliente, x.tipo, "\n"
 
     def removerClienteDaFila(self, cliente):
         # CHECK se cliente no pop eh o msm em atendimento. DONE
@@ -193,19 +191,17 @@ class Simulacao(object):
         # decrementa qnt de clientes no sistema
         self.qntClientesSistema -= 1
         #CHECK. Cliente sendo liberado eh o mesmo do referenciado
-            ## por essa chamada de funcao ?
-                #print '\t'," -- Check: Cliente saindo igual ao cliente em referencia?"
-                #print "Ultimo fila", self.fila[-1].id
-            # Variavel clienteSaindo sendo criada somente para imprimir o dado na tela a proposito de debug 
-            #clienteSaindo = self.fila.pop()
-        self.fila.pop()
+        ## por essa chamada de funcao ?
+            #print '\t'," -- Check: Cliente saindo igual ao cliente em referencia?"
+            #print "Ultimo fila", self.fila[-1].id
+        clienteSaindo = self.fila.pop()
 
-            # ToDo: Try...catch CHECK se cliente saindo id == ultimo cliente na fila id
-            #print "sai cliente: ", clienteSaindo.id 
-                #print "cliente no serv: ",cliente.id
+        # ToDo: Try...catch CHECK se cliente saindo id == ultimo cliente na fila id
+        #print "sai cliente: ", clienteSaindo.id 
+            #print "cliente no serv: ",cliente.id
 
-                #print '\t'," -- Check N == variavel de controle de clientes na fila ?"
-                #print len(self.fila) == self.qntClientesSistema
+            #print '\t'," -- Check N == variavel de controle de clientes na fila ?"
+            #print len(self.fila) == self.qntClientesSistema
 
         # Atualiza tempo em sistema do cliente
         cliente.tempoSistema = self.tempoAtual - cliente.chegada
@@ -216,6 +212,8 @@ class Simulacao(object):
 
         self.qntClientesAtendidos += 1
 
+
+
         # Verificar se ha prox Cliente na fila
         ## so eh necessario liberar o serv. se nao houver outro cliente.
         ## se tiver cliente em espera, basta chamar inserirClienteServ mudando o cliente
@@ -223,10 +221,10 @@ class Simulacao(object):
         if len(self.fila):
             #Pegar referencia de prox. Cliente. Ultimo elemento da fila
             proxClienteServico = self.fila[-1]
-                #print '\t'," --- Fila com cliente a atender. Prox Cliente: ", proxClienteServico.id 
-                # Inserir cliente em servico e adicionar tempo
-                # de servico gerado 
-                #proxClienteServico.tempoServico = self.servidor.servidorIniciaServico(self.tempoAtual, proxClienteServico)
+            #print '\t'," --- Fila com cliente a atender. Prox Cliente: ", proxClienteServico.id 
+            # Inserir cliente em servico e adicionar tempo
+            # de servico gerado 
+            #proxClienteServico.tempoServico = self.servidor.servidorIniciaServico(self.tempoAtual, proxClienteServico)
             
             # UPDATE: Agora a funcao e chamada somente para inicializar o servico do cliente no servidor.
             # O agendamento eh feito na funcao de gerar eventos.
@@ -234,6 +232,7 @@ class Simulacao(object):
             # Atualizar tempo em fila de espera do cliente
             proxClienteServico.tempoFilaEspera = self.tempoAtual - proxClienteServico.chegada
             
+
             self.areaClientesFilaEsperaPorIntervalTempo += self.qntClientesFilaDeEspera * (self.tempoAtual - self.instanteUltimoEvento)
             self.instanteUltimoEvento = self.tempoAtual
 
@@ -250,31 +249,31 @@ class Simulacao(object):
             # Adicionar evento de fim de servico
             self.adicionarEvento(1, proxClienteServico.id, proxClienteServico.tempoServico)
 
-        # Cliente sera atendido, gerar tempo de servico e add evento fim de serv
+            # Cliente sera atendido, gerar tempo de servico e add evento fim de serv
             
-                #print '\t'," --- servico agendado = ", proxClienteServico.tempoServico, "cliente: ", proxClienteServico.id
-                
-                # Criar evento de fim de servico
-                #proxEventoFimdeServ = Evento(proxClienteServico.tempoServico, proxClienteServico.id, 1)
-                # Adicionar na lista de eventos
-                ## ToDo: comparar instante com proxChegada
-                #self.listaDeEventos.append(proxEventoFimdeServ)
+            #print '\t'," --- servico agendado = ", proxClienteServico.tempoServico, "cliente: ", proxClienteServico.id
+            
+            # Criar evento de fim de servico
+            #proxEventoFimdeServ = Evento(proxClienteServico.tempoServico, proxClienteServico.id, 1)
+            # Adicionar na lista de eventos
+            ## ToDo: comparar instante com proxChegada
+            #self.listaDeEventos.append(proxEventoFimdeServ)
 
-                #print '\t'," - antes de ordenar. Tam = ", len(self.listaDeEventos)
-                #for x in self.listaDeEventos :
-                    #print x.tempo, x.refCliente, x.tipo, "\n"
-                # O tempo de servico gerado sera comparado com todos os eventos que forem agendado ate ele ser 
-                ## executado. Portanto toda a lista de eventos deve ser ordenada
-                
-                # Definicao da funcao que fornecera a chave desejada (o instante agendado) para criterio de
-                ## ordenamento
-                #self.listaDeEventos = sorted(self.listaDeEventos, key=lambda evento: evento.tempo)
-                
-                #print "ordenar lista eventos por tempo"
+            #print '\t'," - antes de ordenar. Tam = ", len(self.listaDeEventos)
+            #for x in self.listaDeEventos :
+                #print x.tempo, x.refCliente, x.tipo, "\n"
+            # O tempo de servico gerado sera comparado com todos os eventos que forem agendado ate ele ser 
+            ## executado. Portanto toda a lista de eventos deve ser ordenada
+            
+            # Definicao da funcao que fornecera a chave desejada (o instante agendado) para criterio de
+            ## ordenamento
+            #self.listaDeEventos = sorted(self.listaDeEventos, key=lambda evento: evento.tempo)
+            
+            #print "ordenar lista eventos por tempo"
 
-                #print "depois"
-                #for x in self.listaDeEventos :
-                #    print x.tempo, x.refCliente, x.tipo, "\n"
+            #print "depois"
+            #for x in self.listaDeEventos :
+            #    print x.tempo, x.refCliente, x.tipo, "\n"
         else:
             #Se nao houver ninguem na fila a ser atendido, entao
             # chama rotina de liberar servidor
@@ -298,7 +297,6 @@ class Simulacao(object):
         print "Lambda: ", self.lambd
         print "FCFS: ", self.disciplinaAtendimentoFCFS
         '''
-        # Teste Fase Transiente
 
         #ToDo: Por enquanto o criterio de parada eh a qnt de clientes
         criterioParada = False
@@ -307,16 +305,16 @@ class Simulacao(object):
             # Movendo var. tempoAtual para a simulacao
 
         # qntRodadas sera 3200 com incrementos de 100 em casos especificos... a ver
-        qntClientesRodada = self.k
+        qntClientesRodada = 50000
 
         # ToDo: Definir criterio de parada da Simulacao
         while not criterioParada:
             #print "Tam lista eventos - inc crit parada", len(self.listaDeEventos)
             
-                # Enquanto  nao  parar simulacao, executar prox. evento
-                #print tempoAtual + self.agendador.agendarChegada(self.lambd[0])
-                # Verifica se lista de eventos contém qualquer elemento 
-                # (se lista vazia, self.listaDeEventos == False)
+            # Enquanto  nao  parar simulacao, executar prox. evento
+            #print tempoAtual + self.agendador.agendarChegada(self.lambd[0])
+            # Verifica se lista de eventos contém qualquer elemento 
+            # (se lista vazia, self.listaDeEventos == False)
             if self.listaDeEventos:
                 #print '\n\t',"Tratar Evento"
                 
@@ -346,33 +344,28 @@ class Simulacao(object):
                 # tipo de evento == 1    
                 else:
                     #print '\t'," - Tratar evento fim de servico"
-                        # CHECK: consistencia: cliente em atendimento é o mesmo 
-                        # referenciado no evento ?
-                        #print '\t'," - user em atendimento consistente com evento FimdServ? " 
-                        #print self.servidor.clienteEmAtendimento.id == eventoAtual.refCliente
-                        # Remover cliente da fila de atendimento
+                    # CHECK: consistencia: cliente em atendimento é o mesmo 
+                    # referenciado no evento ?
+                    #print '\t'," - user em atendimento consistente com evento FimdServ? " 
+                    #print self.servidor.clienteEmAtendimento.id == eventoAtual.refCliente
+                    # Remover cliente da fila de atendimento
                     self.removerClienteDaFila(self.servidor.clienteEmAtendimento)
                     #agendar outra chegada no proximo loop principal
             # Lista Vazia, agendar chegada
             else:
                 #print '\n\t',"Lista vazia: agendar chegada"
-                    #Criar evento chegada (tipo  0)
-                    ## gerar tempo de chegada // sera uma chamada a funcao correspondente do agendador
-                    #intervaloChegada = self.agendador.agendarChegada()
-                    #self.clienteID += 1
-                    #print '\t'," -chegada gerada: ", intervaloChegada, "Cliente: ", self.clienteID
-                    #proxEvento = Evento(self.tempoAtual + intervaloChegada, self.clienteID, 0)
-                    #self.listaDeEventos.append(proxEvento)
+                #Criar evento chegada (tipo  0)
+                ## gerar tempo de chegada // sera uma chamada a funcao correspondente do agendador
+                #intervaloChegada = self.agendador.agendarChegada()
+                #self.clienteID += 1
+                #print '\t'," -chegada gerada: ", intervaloChegada, "Cliente: ", self.clienteID
+                #proxEvento = Evento(self.tempoAtual + intervaloChegada, self.clienteID, 0)
+                #self.listaDeEventos.append(proxEvento)
                 # Se lista vazia, criar evento de chegada
                 self.clienteID += 1
                 self.adicionarEvento(0, self.clienteID, self.tempoAtual)
-            #Printa qnt de clientes no momento
-            print self.qntClientesFilaDeEspera
-            # Contador implementado e tamanho da fila estao conerentes
-            #print len(self.fila) - self.servidor.ocupado
-
             # Printa utilizacao do servidor no momento            
-            print "Utilizacao atual: ", self.servidor.utilizacaoReal(self.tempoAtual)
+            #print "Utilizacao atual: ", self.servidor.utilizacaoReal(self.tempoAtual)
 
             # ToDo alterar conforme criterio de parada! checar se criterio de parada    
             if self.qntClientesAtendidos == qntClientesRodada:    
