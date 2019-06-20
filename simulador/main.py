@@ -1,3 +1,5 @@
+from controllers.agendador import *
+
 class Simulacao(object):
     def __init__(self):
         # Media da taxa de servico. Default deve ser 1.0
