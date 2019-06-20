@@ -444,26 +444,6 @@ class Servidor(object):
         else:
             return 0.0
 
-class Agendador(object):
-    def __init__(self, modo, txChegada, txServico):
-        self.testeCorretude = modo
-        self.txChegada = txChegada
-        self.txServico = txServico
-    # Caso o modo de execucao seja o de depuracao, os valores agendados serao deterministicos --
-    #  -- utilizando as taxas passadas como valores absolutos para intervalos de chegada e 
-    # tempo de serviço. Caso contrario o agendamento chama --
-    #  -- a funcao responsavel por gerar numeros aleatorios exponencialmente distribuidos --
-    #  -- utilizando os parametros como as medias lambda ou mu  
-    def agendarChegada(self):
-        if self.testeCorretude :
-            return self.txChegada
-        return random.expovariate(self.txChegada)
-    def agendarServico(self):
-        if self.testeCorretude :
-            return self.txServico
-        return random.expovariate(self.txServico)
-
-                
 if __name__ == '__main__':
 
     s = Simulacao()
