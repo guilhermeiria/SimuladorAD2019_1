@@ -444,16 +444,6 @@ class Servidor(object):
         else:
             return 0.0
 
-
-class Cliente(object):
-    def __init__(self, instanteEntrada, Id):
-        self.chegada = instanteEntrada
-        self.id = Id
-        self.tempoServico = -1
-        self.tempoFilaEspera = 0.0
-        self.tempoSistema = 0.0
-
-
 class Evento(object):
     """        """
     def __init__(self, tempo, refCliente, tipo ):
