@@ -1,8 +1,8 @@
-from controllers.agendador import *
-from controllers.calculadora import *
-from models.servidor import *
-from models.evento import *
-from models.cliente import *
+from .controllers.agendador import *
+from .controllers.calculadora import *
+from .models.servidor import *
+from .models.evento import *
+from .models.cliente import *
 
 from datetime import datetime
 
