@@ -1,5 +1,3 @@
-import math
-
 class Calculadora(object):
 
     def __init__(self, intervaloDeConfianca):
