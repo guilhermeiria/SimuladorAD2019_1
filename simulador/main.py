@@ -16,7 +16,7 @@ class Simulacao(object):
 
         # Deve-se selecionar um dos valores disponiveis na lista para o rho.
         # Valor Padrao e 0.2
-        self.rho = self.rhoValores[1]
+        self.rho = self.rhoValores[3]
 
         # Por padrao a disciplina de atendimento é a FCFS, caso queira-se a LCFS, mudar para False
         self.disciplinaAtendimentoFCFS = True
@@ -29,8 +29,9 @@ class Simulacao(object):
 
         self.clienteID = 0
         self.listaDeEventos = []
-        self.qntDeRodadas = 1000
+        self.qntDeRodadas = 100
         self.rodadaAtual = 0
+        self.tempoInicioRodada = 0.0
 
         # Alfa utilizado para o intervalo de confianca
         alpha = 0.95
@@ -38,8 +39,6 @@ class Simulacao(object):
         #Tipo de Execucao {0 = fila M/M/1; 1 = modo de depuracao
         # (fila D/D/1) }
         self.modoDeExec = 0
-
-        #self.agendador = Agendador(self.modoDeExec, self.lambd, self.mu)
 
         self.agendador = Agendador()
 
@@ -53,13 +52,15 @@ class Simulacao(object):
         self.qntClientesAtendidos = 0
         self.areaClientesFilaEsperaPorIntervalTempo = 0.0
         self.instanteUltimoEvento = 0.0
-        #self.servidorOcupado = False
+
+        self.amostrasENq =[]
 
         self.servidor = Servidor(self.mu, self.rho, self.agendador)
 
         # Instancias de calculadoras para o tempo na fila de espera
         self.calculadoraAmostraWq = Calculadora(alpha)
         self.calculadoraRodadasWq = Calculadora(alpha)
+        self.calculadoraENq = Calculadora(alpha)
      
     # Tipo de evento { 0 == Chegada; 1 == Fim de serviço}
     def adicionarEvento(self, tipoDeEvento, Id_cliente, instante):
@@ -180,7 +181,7 @@ class Simulacao(object):
         else:
             #Se nao houver ninguem na fila a ser atendido, entao
             # chama rotina de liberar servidor
-            self.servidor.removerClienteServico(self.tempoAtual, cliente)               
+            self.servidor.removerClienteServico(self.tempoAtual)               
     # Funcoes Estatisticas
 
     def esperanca_Nq_analitico(self, lambd, mediaW):
@@ -197,7 +198,7 @@ class Simulacao(object):
         criterioParada = False
 
         # qntRodadas sera 3200 com incrementos de 100 em casos especificos... a ver
-        qntClientesRodada = 50000
+        qntClientesRodada = 5000
 
         # ToDo: Definir criterio de parada da Simulacao
         while not criterioParada:
@@ -236,8 +237,18 @@ class Simulacao(object):
 
             # ToDo alterar conforme criterio de parada! checar se criterio de parada    
             if self.qntClientesAtendidos == qntClientesRodada:
-                criterioParada = True
-
+                if self.rodadaAtual == self.qntDeRodadas:
+                    criterioParada = True
+                ENqRodada = self.areaClientesFilaEsperaPorIntervalTempo/(self.tempoAtual - self.tempoInicioRodada)
+                self.calculadoraENq.adicionaValor(ENqRodada)
+                self.amostrasENq.append(ENqRodada)
+                self.rodadaAtual +=1
+                self.qntClientesAtendidos = 0
+                self.tempoInicioRodada = self.tempoAtual
+                self.areaClientesFilaEsperaPorIntervalTempo = 0.0
+                self.instanteUltimoEvento = self.tempoInicioRodada
+                #print(f'rodada = {self.rodadaAtual} | E[Nq]rodada = {ENqRodada} ')
+        '''
         print(f'Tempo de Simulação: {(datetime.now() - inicioSim)}')
         print(f'Ver.: 0.4.5')
         print(f'M/M/1: {(not self.modoDeExec)}')
@@ -254,10 +265,14 @@ class Simulacao(object):
         print(f'E[W] pela area calculada: {(self.areaClientesFilaEsperaPorIntervalTempo/self.qntClientesAtendidos)}')
         print(f'V(W) pela Calculadora: {self.calculadoraAmostraWq.get_variancia()}')
         print(f'')
-        print(f'Média de Clientes na Fila de Espera: {(self.areaClientesFilaEsperaPorIntervalTempo/self.tempoAtual)}')
+        '''
+        print(f'Média de Clientes na Fila de Espera: E[Nq]= {(self.calculadoraENq.get_media())}')
+        print(f'Variancia de Clientes na Fila de Espera: V(Nq) =  {(self.calculadoraENq.get_variancia())}')
         print(f'Média de Clientes na Fila de Espera analítico teórico: {(self.lambd*(self.rho/(self.mu*(1-self.rho))))}')
+        '''
         print(f'Média de Clientes na Fila de Espera analítico dados simulação: {self.esperanca_Nq_analitico(self.lambd, self.calculadoraAmostraWq.get_media())}')
         print(f'Utilização estimada do Servidor: {self.servidor.utilizacaoReal(self.tempoAtual)}')
+        '''
 
 if __name__ == '__main__':
 

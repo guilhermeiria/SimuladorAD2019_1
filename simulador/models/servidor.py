@@ -13,19 +13,14 @@ class Servidor(object):
         # instantanea, cliente em atendimento
 
     def servidorIniciaServico(self, tempoAtual, cliente):
-        # ToDo nem sempre servico inicia do servidor ocioso
         self.clienteEmAtendimento = cliente
-        # ToDo Se servidor jah esta ocupado, nao alterar condicao nem atualizar tempo ocioso
+        
         if not self.ocupado:
-            # print "Servidor ocioso. A atender"
             self.ocupado = True
             self.tempoOcioso += (tempoAtual - self.ultimoInstanteOcioso)
             self.ultimoInstanteOcioso = tempoAtual
-        # self.tempoDeServicoGerado = tempoAtual + self.agendador.agendarServico()
-        # return self.tempoDeServicoGerado
 
-    def removerClienteServico(self, tempoAtual, cliente):
-        # print "Servidor. rotina remover cliente somente se fila vazia"
+    def removerClienteServico(self, tempoAtual):
         self.ocupado = False
         self.ultimoInstanteOcioso = tempoAtual
         self.clienteEmAtendimento = None
