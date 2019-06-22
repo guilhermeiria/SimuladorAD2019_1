@@ -235,30 +235,29 @@ class Simulacao(object):
             #print "Utilizacao atual: ", self.servidor.utilizacaoReal(self.tempoAtual)
 
             # ToDo alterar conforme criterio de parada! checar se criterio de parada    
-            if self.qntClientesAtendidos == qntClientesRodada:    
+            if self.qntClientesAtendidos == qntClientesRodada:
                 criterioParada = True
-            
 
-        #print ("tempo de Simulacao: %f" %(datetime.now() - inicioSim))
-        print("Ver.: 0.4.5")
-        print("M/M/1: %d" %(not self.modoDeExec))
-        print("Mu: %f" %(self.mu))
-        print("Lambda: %f" %(self.lambd))
-        print("FCFS: %r" %(self.disciplinaAtendimentoFCFS))
-        
-        print("Tempo Atual: %f" %(self.tempoAtual))
-        print("Total de Clientes atendidos: %d" %(self.qntClientesAtendidos))
-        print("E[W]analitico = %f" %(self.rho/(self.mu*(1-self.rho))))
-        #print("E[W]analtico rho estimado = %f" %(self.esperanca_W_analitico(self.servidor.utilizacaoReal(self.tempoAtual), self.mu)))
-        print("E[W] simples: %f" %(self.somaTempoFilaEspera/self.qntClientesAtendidos))
-        print("E[W] pela Calculadora: %f" %(self.calculadoraAmostraWq.get_media()))
-        print("E[W] pela area calculada: %f" %(self.areaClientesFilaEsperaPorIntervalTempo/self.qntClientesAtendidos))
-        print("V(W) pela Calculadora: %f" %(self.calculadoraAmostraWq.get_variancia()))
-        print("")
-        print("Media de Clientes na Fila de Espera: %f" %(self.areaClientesFilaEsperaPorIntervalTempo/self.tempoAtual))
-        print("Media de Clientes na Fila de Espera analit. Teorico: %f" %(self.lambd*(self.rho/(self.mu*(1-self.rho)))))
-        print("Media de Clientes na Fila de Espera analit. Dados simulacao: %f" %(self.esperanca_Nq_analitico(self.lambd, self.calculadoraAmostraWq.get_media())))
-        print("Utilizacao estimada do Servidor: %f" %(self.servidor.utilizacaoReal(self.tempoAtual)))
+        print(f'Tempo de Simulação: {(datetime.now() - inicioSim)}')
+        print(f'Ver.: 0.4.5')
+        print(f'M/M/1: {(not self.modoDeExec)}')
+        print(f'Mu: {self.mu}')
+        print(f'Lambda: {self.lambd}')
+        print(f'FCFS: {self.disciplinaAtendimentoFCFS}')
+        print(f'Conteúdo da fila')
+        print(f'Tempo Atual: {self.tempoAtual}')
+        print(f'Total de Clientes atendidos: {self.qntClientesAtendidos}')
+        print(f'E[W]analítico = {self.rho/(self.mu*(1-self.rho))}')
+        print(f'E[W]analítico rho estimado = {self.esperanca_W_analitico(self.servidor.utilizacaoReal(self.tempoAtual), self.mu)}')
+        print(f'E[W] simples: {(self.somaTempoFilaEspera/self.qntClientesAtendidos)}')
+        print(f'E[W] pela Calculadora: {self.calculadoraAmostraWq.get_media()}')
+        print(f'E[W] pela area calculada: {(self.areaClientesFilaEsperaPorIntervalTempo/self.qntClientesAtendidos)}')
+        print(f'V(W) pela Calculadora: {self.calculadoraAmostraWq.get_variancia()}')
+        print(f'')
+        print(f'Média de Clientes na Fila de Espera: {(self.areaClientesFilaEsperaPorIntervalTempo/self.tempoAtual)}')
+        print(f'Média de Clientes na Fila de Espera analítico teórico: {(self.lambd*(self.rho/(self.mu*(1-self.rho))))}')
+        print(f'Média de Clientes na Fila de Espera analítico dados simulação: {self.esperanca_Nq_analitico(self.lambd, self.calculadoraAmostraWq.get_media())}')
+        print(f'Utilização estimada do Servidor: {self.servidor.utilizacaoReal(self.tempoAtual)}')
 
 if __name__ == '__main__':
 
