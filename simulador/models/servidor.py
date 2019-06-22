@@ -24,7 +24,8 @@ class Servidor(object):
         # self.tempoDeServicoGerado = tempoAtual + self.agendador.agendarServico()
         # return self.tempoDeServicoGerado
 
-    def removerClienteServico(self, tempoAtual, cliente):
+    #def removerClienteServico(self, tempoAtual, cliente):
+    def removerClienteServico(self, tempoAtual):
         # print "Servidor. rotina remover cliente somente se fila vazia"
         self.ocupado = False
         self.ultimoInstanteOcioso = tempoAtual
