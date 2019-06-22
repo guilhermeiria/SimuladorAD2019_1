@@ -6,7 +6,7 @@ class Calculadora(object):
         self.k = self.n = self.ex = self.ex2 = 0.0
 
     def adicionaValor(self, x):
-        if (self.n == 0):
+        if self.n == 0:
             self.k = x
         self.n += 1
         self.ex += x - self.k

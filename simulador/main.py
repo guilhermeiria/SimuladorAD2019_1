@@ -1,16 +1,16 @@
-from controllers.agendador import *
-from controllers.calculadora import *
-from models.servidor import *
-from models.evento import *
-from models.cliente import *
-
 from datetime import datetime
+
+from controllers.agendador import Agendador
+from controllers.calculadora import Calculadora
+from models.servidor import Servidor
+from models.evento import Evento
+from models.cliente import Cliente
 
 class Simulacao(object):
     def __init__(self):
-        # Media da taxa de servico. Default deve ser 1.0       
+        # Media da taxa de servico. Default deve ser 1.0
         self.mu = 1.0
-        # Lista com os valores exigidos de utilização para a simulação 
+        # Lista com os valores exigidos de utilização para a simulação
         # # + super utilizacao para testes de formacao de fila
         self.rhoValores = [0.2, 0.4, 0.6, 0.8, 0.9, 1.1]
 
@@ -42,7 +42,7 @@ class Simulacao(object):
         #self.agendador = Agendador(self.modoDeExec, self.lambd, self.mu)
 
         self.agendador = Agendador()
-        
+
         # Estrutura da Fila
         self.fila = []
         # variaveis da fila
@@ -62,7 +62,7 @@ class Simulacao(object):
         self.calculadoraRodadasWq = Calculadora(alpha)
      
     # Tipo de evento { 0 == Chegada; 1 == Fim de serviço}
-    def adicionarEvento (self, tipoDeEvento, Id_cliente, instante):
+    def adicionarEvento(self, tipoDeEvento, Id_cliente, instante):
         # Se evento for do tipo chegada
         if not tipoDeEvento:
             self.agendador.setTaxa(self.lambd) # chegada
@@ -76,7 +76,7 @@ class Simulacao(object):
         self.listaDeEventos = sorted(self.listaDeEventos, key=lambda evento: evento.tempo)
         
     
-    def adicionarClienteNaFila (self, cliente):
+    def adicionarClienteNaFila(self, cliente):
         self.areaClientesFilaEsperaPorIntervalTempo += self.qntClientesFilaDeEspera * (self.tempoAtual - self.instanteUltimoEvento)
         self.instanteUltimoEvento = self.tempoAtual
 
@@ -88,12 +88,12 @@ class Simulacao(object):
         # final da fila (LCFS, como uma pilha) 
         if self.disciplinaAtendimentoFCFS:
             # FCFS. Adicionando cliente no 
-            self.fila.insert(0,cliente)
+            self.fila.insert(0, cliente)
         else:
             if self.servidor.ocupado:
                 # Se o servidor estiver ocupado, o ultimo elemento deve ser o cliente em atendimento
                 # Portanto adicionar cliente na penultima posicao
-                self.fila.insert(-1,cliente)
+                self.fila.insert(-1, cliente)
             else:
                 # Se nao ha cliente em atendimento, logo fila esta vazia
                 # Adicionar cliente na ultima posicao (append)
@@ -240,25 +240,25 @@ class Simulacao(object):
             
 
         #print ("tempo de Simulacao: %f" %(datetime.now() - inicioSim))
-        print ("Ver.: 0.4.5")
-        print ("M/M/1: %d" %(not self.modoDeExec))
-        print ("Mu: %f" %(self.mu))
-        print ("Lambda: %f" %(self.lambd))
-        print ("FCFS: %r" %(self.disciplinaAtendimentoFCFS))
-        print ("Conteudo da fila")
-        print ("Tempo Atual: %f" %(self.tempoAtual))
-        print ("Total de Clientes atendidos: %d" %(self.qntClientesAtendidos))
-        print ("E[W]analitico = %f" %(self.rho/(self.mu*(1-self.rho))))
-        print ("E[W]analtico rho estimado = %f" %(self.esperanca_W_analitico(self.servidor.utilizacaoReal(self.tempoAtual), self.mu)))
-        print ("E[W] simples: %f" %(self.somaTempoFilaEspera/self.qntClientesAtendidos))
-        print ("E[W] pela Calculadora: %f" %(self.calculadoraAmostraWq.get_media()))
-        print ("E[W] pela area calculada: %f" %(self.areaClientesFilaEsperaPorIntervalTempo/self.qntClientesAtendidos))
-        print ("V(W) pela Calculadora: %f" %(self.calculadoraAmostraWq.get_variancia()))
-        print
-        print ("Media de Clientes na Fila de Espera: %f" %(self.areaClientesFilaEsperaPorIntervalTempo/self.tempoAtual))
-        print ("Media de Clientes na Fila de Espera analit. Teorico: %f" %(self.lambd*(self.rho/(self.mu*(1-self.rho)))))
-        print ("Media de Clientes na Fila de Espera analit. Dados simulacao: %f" %(self.esperanca_Nq_analitico(self.lambd,self.calculadoraAmostraWq.get_media())))
-        print ("Utilizacao estimada do Servidor: %f" %(self.servidor.utilizacaoReal(self.tempoAtual)))
+        print("Ver.: 0.4.5")
+        print("M/M/1: %d" %(not self.modoDeExec))
+        print("Mu: %f" %(self.mu))
+        print("Lambda: %f" %(self.lambd))
+        print("FCFS: %r" %(self.disciplinaAtendimentoFCFS))
+        print("Conteudo da fila")
+        print("Tempo Atual: %f" %(self.tempoAtual))
+        print("Total de Clientes atendidos: %d" %(self.qntClientesAtendidos))
+        print("E[W]analitico = %f" %(self.rho/(self.mu*(1-self.rho))))
+        print("E[W]analtico rho estimado = %f" %(self.esperanca_W_analitico(self.servidor.utilizacaoReal(self.tempoAtual), self.mu)))
+        print("E[W] simples: %f" %(self.somaTempoFilaEspera/self.qntClientesAtendidos))
+        print("E[W] pela Calculadora: %f" %(self.calculadoraAmostraWq.get_media()))
+        print("E[W] pela area calculada: %f" %(self.areaClientesFilaEsperaPorIntervalTempo/self.qntClientesAtendidos))
+        print("V(W) pela Calculadora: %f" %(self.calculadoraAmostraWq.get_variancia()))
+        print("")
+        print("Media de Clientes na Fila de Espera: %f" %(self.areaClientesFilaEsperaPorIntervalTempo/self.tempoAtual))
+        print("Media de Clientes na Fila de Espera analit. Teorico: %f" %(self.lambd*(self.rho/(self.mu*(1-self.rho)))))
+        print("Media de Clientes na Fila de Espera analit. Dados simulacao: %f" %(self.esperanca_Nq_analitico(self.lambd, self.calculadoraAmostraWq.get_media())))
+        print("Utilizacao estimada do Servidor: %f" %(self.servidor.utilizacaoReal(self.tempoAtual)))
 
 if __name__ == '__main__':
 
