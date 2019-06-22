@@ -20,7 +20,9 @@ class Servidor(object):
             self.tempoOcioso += (tempoAtual - self.ultimoInstanteOcioso)
             self.ultimoInstanteOcioso = tempoAtual
 
+    #def removerClienteServico(self, tempoAtual, cliente):
     def removerClienteServico(self, tempoAtual):
+        # print "Servidor. rotina remover cliente somente se fila vazia"
         self.ocupado = False
         self.ultimoInstanteOcioso = tempoAtual
         self.clienteEmAtendimento = None

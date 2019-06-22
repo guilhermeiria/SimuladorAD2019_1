@@ -63,14 +63,15 @@ class Simulacao(object):
         self.calculadoraENq = Calculadora(alpha)
      
     # Tipo de evento { 0 == Chegada; 1 == Fim de serviço}
-    def adicionarEvento(self, tipoDeEvento, Id_cliente, instante):
+    #def adicionarEvento(self, tipoDeEvento, Id_cliente, instante):
+    def adicionarEvento(self, tipoDeEvento, Id_cliente):
         # Se evento for do tipo chegada
         if not tipoDeEvento:
             self.agendador.setTaxa(self.lambd) # chegada
-            proxEvento = Evento( self.tempoAtual + self.agendador.proximoEvento(), Id_cliente, tipoDeEvento)
+            proxEvento = Evento(self.tempoAtual + self.agendador.proximoEvento(), Id_cliente, tipoDeEvento)
         else:
             self.agendador.setTaxa(self.mu) # serviço
-            proxEvento = Evento( self.tempoAtual + self.agendador.proximoEvento(), Id_cliente, tipoDeEvento)
+            proxEvento = Evento(self.tempoAtual + self.agendador.proximoEvento(), Id_cliente, tipoDeEvento)
 
         self.listaDeEventos.append(proxEvento)
         #Ordenar lista de eventos por instante de ocorrencia do evento (campo tempo)
@@ -119,7 +120,8 @@ class Simulacao(object):
             self.calculadoraAmostraWq.adicionaValor(cliente.tempoFilaEspera)
 
             # Criar evento de fim de servico. Tipo de evento == 1
-            self.adicionarEvento(1, cliente.id, cliente.tempoServico)
+            #self.adicionarEvento(1, cliente.id, cliente.tempoServico)
+            self.adicionarEvento(1, cliente.id)
 
 
     def removerClienteDaFila(self, cliente):
@@ -131,7 +133,7 @@ class Simulacao(object):
         ## por essa chamada de funcao ?
             #print '\t'," -- Check: Cliente saindo igual ao cliente em referencia?"
             #print "Ultimo fila", self.fila[-1].id
-        clienteSaindo = self.fila.pop()
+        #clienteSaindo = self.fila.pop()
 
         # ToDo: Try...catch CHECK se cliente saindo id == ultimo cliente na fila id
         #print "sai cliente: ", clienteSaindo.id 
@@ -153,7 +155,7 @@ class Simulacao(object):
         ## so eh necessario liberar o serv. se nao houver outro cliente.
         ## se tiver cliente em espera, basta chamar inserirClienteServ mudando o cliente
         ## Com isso o servidor não recalcula o tempo ocioso
-        if len(self.fila):
+        if self.fila:
             #Pegar referencia de prox. Cliente a ser atendido que eh o Ultimo elemento da fila
             proxClienteServico = self.fila[-1]
 
@@ -176,7 +178,8 @@ class Simulacao(object):
             self.calculadoraAmostraWq.adicionaValor(proxClienteServico.tempoFilaEspera)
 
             # Adicionar evento de fim de servico
-            self.adicionarEvento(1, proxClienteServico.id, proxClienteServico.tempoServico)
+            #self.adicionarEvento(1, proxClienteServico.id, proxClienteServico.tempoServico)
+            self.adicionarEvento(1, proxClienteServico.id)
 
         else:
             #Se nao houver ninguem na fila a ser atendido, entao
@@ -219,7 +222,8 @@ class Simulacao(object):
                     self.adicionarClienteNaFila(clienteAtual)
                     # Cada chegada desencadeia o agendemento de uma nova
                     self.clienteID += 1
-                    self.adicionarEvento(0, self.clienteID, self.tempoAtual)
+                    #self.adicionarEvento(0, self.clienteID, self.tempoAtual)
+                    self.adicionarEvento(0, self.clienteID)
                    
                 # Senao, entoa se trata de um evento Fim de servico 
                 # tipo de evento == 1    
@@ -231,7 +235,8 @@ class Simulacao(object):
             else:
                 # Se lista vazia, criar evento de chegada (evento tipo 0). 
                 self.clienteID += 1
-                self.adicionarEvento(0, self.clienteID, self.tempoAtual)
+                #self.adicionarEvento(0, self.clienteID, self.tempoAtual)
+                self.adicionarEvento(0, self.clienteID)
             # Printa utilizacao do servidor no momento            
             #print "Utilizacao atual: ", self.servidor.utilizacaoReal(self.tempoAtual)
 
