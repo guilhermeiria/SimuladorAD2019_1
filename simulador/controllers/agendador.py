@@ -8,6 +8,8 @@ class Agendador(object):
 
     def setTaxa(self, taxa):
         self.taxa = taxa
+    def getTaxa(self):
+        return self.taxa
 
     def getSemente(self, range=1):
         random.seed()
@@ -18,38 +20,44 @@ class Agendador(object):
 
     def proximoEvento(self):
         u0 = self.getSemente()
-        a = self.getSemente(100)
-        b = self.getSemente(100)
+        a = 0
+        b = 100
 
-        a = 1 - exp(-self.taxa * a)
-        b = 1 - exp(-self.taxa * b)
+        li = 1 - exp(-self.taxa * a)
+        ls = 1 - exp(-self.taxa * b)
 
-        if u0 < 1 - exp(-self.taxa * a):
-            return a
-        if u0 > 1 - exp(-self.taxa * b):
-            return b
+        if u0 < li:
+            return li
+        if u0 > ls:
+            return ls
 
-        if (1 - exp(-self.taxa*a) < u0) and (u0 < 1 - exp(-self.taxa*b)):
+        if (li < u0) and (u0 < ls):
             x0 = log(1 - u0)/(-self.taxa)
             return x0
-
+'''
 # Testando classe
 s = Agendador()
 s.setTaxa(1.0)
 tempo_simulacao = 0.0
-tempo_simulacao = s.proximoEvento()
-print("Proxima chegada em %f unidades de tempo, tempo de simulacao em: %f" % (tempo_simulacao, tempo_simulacao))
+proxima_chegada = s.proximoEvento()
+'''
+
+'''
+print("Proxima chegada em %f unidades de tempo, tempo de simulacao em: %f" % (proxima_chegada, tempo_simulacao))
 for i in range(1000):
-    proxima_chegada = s.proximoEvento()
     tempo_simulacao = tempo_simulacao + proxima_chegada
+    proxima_chegada = s.proximoEvento()   
     print("Proxima chegada em %f unidades de tempo, tempo de simulacao em: %f" % (proxima_chegada, tempo_simulacao))
+'''
 
-
-"""s = Agendador()
+'''
+s = Agendador()
 s.setTaxa(1.0)
 soma = 0.0
-intervalo = 100
+intervalo = 1000000
 for i in range(intervalo):
     soma = soma + s.proximoEvento()
-
-print("Media: %f" %(soma / intervalo))"""
+media = soma / intervalo
+print("Media: %f" %(media))
+print("diferenca para media: %f" %(abs(s.getTaxa() - media )))
+'''

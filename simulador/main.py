@@ -29,7 +29,7 @@ class Simulacao(object):
 
         self.clienteID = 0
         self.listaDeEventos = []
-        self.qntDeRodadas = 100
+        self.qntDeRodadas = 1000
         self.rodadaAtual = 0
 
         # Alfa utilizado para o intervalo de confianca
