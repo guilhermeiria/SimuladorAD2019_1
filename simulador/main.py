@@ -245,11 +245,11 @@ class Simulacao(object):
         print("Mu: %f" %(self.mu))
         print("Lambda: %f" %(self.lambd))
         print("FCFS: %r" %(self.disciplinaAtendimentoFCFS))
-        print("Conteudo da fila")
+        
         print("Tempo Atual: %f" %(self.tempoAtual))
         print("Total de Clientes atendidos: %d" %(self.qntClientesAtendidos))
         print("E[W]analitico = %f" %(self.rho/(self.mu*(1-self.rho))))
-        print("E[W]analtico rho estimado = %f" %(self.esperanca_W_analitico(self.servidor.utilizacaoReal(self.tempoAtual), self.mu)))
+        #print("E[W]analtico rho estimado = %f" %(self.esperanca_W_analitico(self.servidor.utilizacaoReal(self.tempoAtual), self.mu)))
         print("E[W] simples: %f" %(self.somaTempoFilaEspera/self.qntClientesAtendidos))
         print("E[W] pela Calculadora: %f" %(self.calculadoraAmostraWq.get_media()))
         print("E[W] pela area calculada: %f" %(self.areaClientesFilaEsperaPorIntervalTempo/self.qntClientesAtendidos))
