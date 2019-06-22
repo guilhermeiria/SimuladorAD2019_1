@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/python3
 # coding=UTF8
 
 from Calculadora import Calculadora
