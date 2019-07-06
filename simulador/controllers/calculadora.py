@@ -16,4 +16,6 @@ class Calculadora(object):
         return self.k + self.ex / self.n
 
     def get_variancia(self):
+        #if (self.n == 0 or self.n == 1):
+        #    return 0
         return (self.ex2 - (self.ex*self.ex)/self.n) / (self.n-1)

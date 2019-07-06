@@ -29,7 +29,7 @@ class Simulacao(object):
 
         self.clienteID = 0
         self.listaDeEventos = []
-        self.qntDeRodadas = 100
+        self.qntDeRodadas = 1000
         self.rodadaAtual = 0
         self.tempoInicioRodada = 0.0
 
@@ -133,7 +133,7 @@ class Simulacao(object):
         ## por essa chamada de funcao ?
             #print '\t'," -- Check: Cliente saindo igual ao cliente em referencia?"
             #print "Ultimo fila", self.fila[-1].id
-        #clienteSaindo = self.fila.pop()
+        clienteSaindo = self.fila.pop()
 
         # ToDo: Try...catch CHECK se cliente saindo id == ultimo cliente na fila id
         #print "sai cliente: ", clienteSaindo.id 
@@ -200,8 +200,8 @@ class Simulacao(object):
         #ToDo: Por enquanto o criterio de parada eh a qnt de clientes
         criterioParada = False
 
-        # qntRodadas sera 3200 com incrementos de 100 em casos especificos... a ver
-        qntClientesRodada = 5000
+        # qntDeRodadas sera 3200 com incrementos de 100 em casos especificos... a ver
+        qntClientesRodada = 3200
 
         # ToDo: Definir criterio de parada da Simulacao
         while not criterioParada:
@@ -252,25 +252,25 @@ class Simulacao(object):
                 self.tempoInicioRodada = self.tempoAtual
                 self.areaClientesFilaEsperaPorIntervalTempo = 0.0
                 self.instanteUltimoEvento = self.tempoInicioRodada
-                #print(f'rodada = {self.rodadaAtual} | E[Nq]rodada = {ENqRodada} ')
-        '''
+                #print(f'rodada = {self.rodadaAtual} | E[Nq]rodada = {ENqRodada} | v(Nq)rodada = {self.calculadoraENq.get_variancia()} ')
+                
+        
         print(f'Tempo de Simulação: {(datetime.now() - inicioSim)}')
-        print(f'Ver.: 0.4.5')
+        #print(f'Ver.: 0.4.5')
         print(f'M/M/1: {(not self.modoDeExec)}')
         print(f'Mu: {self.mu}')
         print(f'Lambda: {self.lambd}')
         print(f'FCFS: {self.disciplinaAtendimentoFCFS}')
-        print(f'Conteúdo da fila')
-        print(f'Tempo Atual: {self.tempoAtual}')
-        print(f'Total de Clientes atendidos: {self.qntClientesAtendidos}')
+        #print(f'Conteúdo da fila')
+        #print(f'Tempo Atual: {self.tempoAtual}')
+        print(f'Total de Clientes por Rodada: {qntClientesRodada}, Total de Rodadas: {self.qntDeRodadas}')
         print(f'E[W]analítico = {self.rho/(self.mu*(1-self.rho))}')
-        print(f'E[W]analítico rho estimado = {self.esperanca_W_analitico(self.servidor.utilizacaoReal(self.tempoAtual), self.mu)}')
-        print(f'E[W] simples: {(self.somaTempoFilaEspera/self.qntClientesAtendidos)}')
+        #print(f'E[W]analítico rho estimado = {self.esperanca_W_analitico(self.servidor.utilizacaoReal(self.tempoAtual), self.mu)}')
+
         print(f'E[W] pela Calculadora: {self.calculadoraAmostraWq.get_media()}')
-        print(f'E[W] pela area calculada: {(self.areaClientesFilaEsperaPorIntervalTempo/self.qntClientesAtendidos)}')
+        #print(f'E[W] pela area calculada: {(self.areaClientesFilaEsperaPorIntervalTempo/self.qntClientesAtendidos)}')
         print(f'V(W) pela Calculadora: {self.calculadoraAmostraWq.get_variancia()}')
-        print(f'')
-        '''
+        
         print(f'Média de Clientes na Fila de Espera: E[Nq]= {(self.calculadoraENq.get_media())}')
         print(f'Variancia de Clientes na Fila de Espera: V(Nq) =  {(self.calculadoraENq.get_variancia())}')
         print(f'Média de Clientes na Fila de Espera analítico teórico: {(self.lambd*(self.rho/(self.mu*(1-self.rho))))}')
