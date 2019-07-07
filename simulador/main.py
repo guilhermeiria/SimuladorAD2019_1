@@ -30,8 +30,12 @@ class Simulacao(object):
         self.clienteID = 0
         self.listaDeEventos = []
         self.qntDeRodadas = 1000
+        self.clientesPorRodada = 3200
+        self.qntClientesTransientes = 1000
         self.rodadaAtual = 0
         self.tempoInicioRodada = 0.0
+        self.menorDelta = 10.0
+        self.valorMetricaAnterior = 0.0
 
         # Alfa utilizado para o intervalo de confianca
         alpha = 0.95
@@ -201,7 +205,7 @@ class Simulacao(object):
         criterioParada = False
 
         # qntDeRodadas sera 3200 com incrementos de 100 em casos especificos... a ver
-        qntClientesRodada = 3200
+        qntClientesRodada = self.clientesPorRodada
 
         # ToDo: Definir criterio de parada da Simulacao
         while not criterioParada:
@@ -240,6 +244,9 @@ class Simulacao(object):
             # Printa utilizacao do servidor no momento            
             #print "Utilizacao atual: ", self.servidor.utilizacaoReal(self.tempoAtual)
 
+            #A cada clientesVerificaTransiente armazenar valor de metrica analisada para fim da fase transiente
+
+
             # ToDo alterar conforme criterio de parada! checar se criterio de parada    
             if self.qntClientesAtendidos == qntClientesRodada:
                 if self.rodadaAtual == self.qntDeRodadas:
@@ -252,7 +259,16 @@ class Simulacao(object):
                 self.tempoInicioRodada = self.tempoAtual
                 self.areaClientesFilaEsperaPorIntervalTempo = 0.0
                 self.instanteUltimoEvento = self.tempoInicioRodada
-                #print(f'rodada = {self.rodadaAtual} | E[Nq]rodada = {ENqRodada} | v(Nq)rodada = {self.calculadoraENq.get_variancia()} ')
+
+                valorMetricaAtual = self.calculadoraENq.get_variancia()
+                deltaAtual = abs(valorMetricaAtual - self.valorMetricaAnterior)
+                #print(f'DeltaAtual:  {deltaAtual}')
+                if (deltaAtual < self.menorDelta) and deltaAtual:
+                        self.menorDelta = deltaAtual
+                self.valorMetricaAnterior = valorMetricaAtual
+                print(f'Menor Delta:  {self.menorDelta}')
+                print(f'rodada = {self.rodadaAtual} | E[Nq]rodada = {ENqRodada} | v(Nq)rodada = {self.calculadoraENq.get_variancia()} ')
+                print(f'E[W] pela Calculadora: {self.calculadoraAmostraWq.get_media()} | v(W) = {self.calculadoraAmostraWq.get_variancia()}')
                 
         
         print(f'Tempo de Simulação: {(datetime.now() - inicioSim)}')
@@ -275,6 +291,7 @@ class Simulacao(object):
         print(f'Variancia de Clientes na Fila de Espera: V(Nq) =  {(self.calculadoraENq.get_variancia())}')
         print(f'Média de Clientes na Fila de Espera analítico teórico: {(self.lambd*(self.rho/(self.mu*(1-self.rho))))}')
         print(f'Média de Clientes na Fila de Espera analítico teórico formula Andre: {(self.rho**2/(1-self.rho))}')
+        print(f'Variância de Nq Analítico : {(self.rho**2 + self.rho**3 - self.rho**4)/(1 - self.rho)**2}')
         '''
         print(f'Média de Clientes na Fila de Espera analítico dados simulação: {self.esperanca_Nq_analitico(self.lambd, self.calculadoraAmostraWq.get_media())}')
         print(f'Utilização estimada do Servidor: {self.servidor.utilizacaoReal(self.tempoAtual)}')
