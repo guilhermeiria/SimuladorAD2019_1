@@ -274,6 +274,7 @@ class Simulacao(object):
         print(f'Média de Clientes na Fila de Espera: E[Nq]= {(self.calculadoraENq.get_media())}')
         print(f'Variancia de Clientes na Fila de Espera: V(Nq) =  {(self.calculadoraENq.get_variancia())}')
         print(f'Média de Clientes na Fila de Espera analítico teórico: {(self.lambd*(self.rho/(self.mu*(1-self.rho))))}')
+        print(f'Média de Clientes na Fila de Espera analítico teórico formula Andre: {(self.rho**2/(1-self.rho))}')
         '''
         print(f'Média de Clientes na Fila de Espera analítico dados simulação: {self.esperanca_Nq_analitico(self.lambd, self.calculadoraAmostraWq.get_media())}')
         print(f'Utilização estimada do Servidor: {self.servidor.utilizacaoReal(self.tempoAtual)}')
